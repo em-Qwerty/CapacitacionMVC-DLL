@@ -1,0 +1,44 @@
+---------------------- Clase conexion ----------------------
+
+		public MySqlConnection probarConexion()
+        {
+            MySqlConnection conn = new MySqlConnection();
+            string myConnectionString;
+
+            myConnectionString = "Server=localhost;Database=bdcapacitacion; Uid=root;Pwd='';";
+
+            try
+            {
+                conn.ConnectionString = myConnectionString;
+                conn.Open();
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Console.WriteLine("no conecto");
+            }
+            return conn;
+        }
+
+
+---------------------- Clase sentencia ----------------------
+
+		public MySqlDataAdapter consultaBD(string dato, string campo, string tabla)
+        {
+            conexion cn = new conexion();
+            cn.probarConexion();
+            string sql = "SELECT * FROM " + tabla + " WHERE " + campo + "='" + dato + "';";
+            MySqlDataAdapter dataTable = new MySqlDataAdapter(sql, cn.probarConexion());
+            return dataTable;
+        }
+
+
+---------------------- Clase logica ----------------------
+
+		public DataTable consultaLogica(string dato, string campo, string tabla)  //obtener datos de la consulta
+        {
+            Sentencias sn = new Sentencias();
+            MySqlDataAdapter dt = sn.consultaBD(dato, campo, tabla);
+            DataTable table = new DataTable();
+            dt.Fill(table);
+            return table;
+        }
